@@ -7,10 +7,18 @@ const routes = require('./routes/authRoutes')
 const cors = require('cors');
 const app = express();
 const PORT = 3000;
+const fileUpload = require("express-fileupload")
+const cloudinary = require("./config/cloudinary")
+const upload = require("./routes/FileUpload")
 
 
 
+app.use(express.json())
 app.use(cors());
+app.use(fileUpload());
+cloudinary.cloudinaryConnect();
+
+
 connectDB();
 
 
@@ -19,6 +27,7 @@ app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/v1', routes)
+app.use('/api/v1/upload', upload)
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
